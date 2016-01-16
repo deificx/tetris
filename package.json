@@ -8,6 +8,9 @@
   },
   "author": "Even Alander <even@alander.org>",
   "license": "UNLICENSED",
-  "devDependencies": {},
+  "devDependencies": {
+    "animation-frame": "^0.2.5",
+    "webpack": "^1.12.11"
+  },
   "dependencies": {}
 }
