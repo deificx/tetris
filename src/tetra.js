@@ -64,7 +64,7 @@ export default class Tetra {
 		for (i = this.shape.length; i > 0; i--) {
 			for (j = 0; j < this.shape[i].length; j++) {
 				if (typeof shape[j] === 'undefined') {
-					shape[j] = [this.shape[i][j]];
+					shape[j] = [this.shape[i][j],];
 				} else {
 					shape[j].push(this.shape[i][j]);
 				}
