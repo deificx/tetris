@@ -8,6 +8,6 @@ let pieces = [];
 const animationFrame = new AnimationFrame();
 const gameLoop = () => {
 	animationFrame.request(gameLoop);
-}
+};
 
 animationFrame.request(gameLoop);
