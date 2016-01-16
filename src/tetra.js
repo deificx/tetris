@@ -2,7 +2,7 @@
 
 export default class Tetra {
 	constructor(shape) {
-		this.shape = null;
+		this.size = 30;
 
 		switch (shape) {
 		case 'I':
@@ -61,7 +61,7 @@ export default class Tetra {
 	rotate() {
 		let i, j;
 		let shape = [];
-		for (i = this.shape.length; i > 0; i--) {
+		for (i = this.shape.length - 1; i >= 0; i--) {
 			for (j = 0; j < this.shape[i].length; j++) {
 				if (typeof shape[j] === 'undefined') {
 					shape[j] = [this.shape[i][j],];
@@ -77,7 +77,22 @@ export default class Tetra {
 
 	}
 
-	render() {
-		
+	render(context) {
+		let i, j, x = 0, y = 0;
+		for (i = 0; i < this.shape.length; i++) {
+			for (j = 0; j < this.shape[i].length; j++) {
+				if (this.shape[i][j]) {
+					context.beginPath();
+					context.rect(x, y, this.size, this.size);
+					context.fillStyle = this.color;
+					context.fill();
+					context.stroke();
+					context.closePath();
+				}
+				x += this.size;
+			}
+			x = 0;
+			y += this.size;
+		}
 	}
 }
