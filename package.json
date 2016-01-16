@@ -1,0 +1,13 @@
+{
+  "name": "tetris",
+  "version": "1.0.0",
+  "description": "remake of tetris, for educational purposes",
+  "main": "src/tetris",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Even Alander <even@alander.org>",
+  "license": "UNLICENSED",
+  "devDependencies": {},
+  "dependencies": {}
+}
