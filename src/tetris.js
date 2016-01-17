@@ -1,10 +1,10 @@
 "use strict";
 
 import canvas from './html.js';
-import Tetra from './tetra';
+import Tetrimino from './Tetrimino';
 import AnimationFrame from 'animation-frame';
 
-window.piece = new Tetra('I');
+window.piece = new Tetrimino('I');
 
 const context = canvas.getContext('2d');
 const animationFrame = new AnimationFrame();
