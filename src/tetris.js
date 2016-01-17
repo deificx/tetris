@@ -35,7 +35,7 @@ const gameLoop = () => {
 animationFrame.request(gameLoop);
 
 controls.on('move', (direction) => {
-	console.log('move '+direction);
+	window.piece.move(direction);
 });
 
 controls.on('rotate', () => {

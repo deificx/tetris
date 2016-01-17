@@ -59,6 +59,20 @@ export default class Tetrimino {
 		}
 	}
 
+	move(direction) {
+		switch (direction) {
+		case 'LEFT':
+			this.x -= this.size;
+			break;
+		case 'RIGHT':
+			this.x += this.size;
+			break;
+		case 'DOWN':
+			this.y += this.size;
+			break;
+		}
+	}
+
 	rotate() {
 		let i, j, shape = [];
 		for (i = this.shape.length - 1; i >= 0; i--) {
