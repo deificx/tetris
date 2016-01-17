@@ -62,10 +62,14 @@ export default class Tetrimino {
 	move(direction) {
 		switch (direction) {
 		case 'LEFT':
-			this.x -= this.size;
+			if (this.x > 0) {
+				this.x -= this.size;
+			}
 			break;
 		case 'RIGHT':
-			this.x += this.size;
+			if (this.x + this.shape[0].length * this.size < this.size * 10) {
+				this.x += this.size;
+			}
 			break;
 		case 'DOWN':
 			this.y += this.size;

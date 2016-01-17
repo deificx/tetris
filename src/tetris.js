@@ -9,7 +9,7 @@ import AnimationFrame from 'animation-frame';
 window.grid = new Grid(10, 20);
 window.piece = new Tetrimino('I');
 
-let cooldown = 300, dt, now, time;
+let cooldown = 500, dt, now, time;
 
 const context = canvas.getContext('2d');
 const animationFrame = new AnimationFrame();
@@ -25,7 +25,7 @@ const gameLoop = () => {
 	context.fillStyle = '#ddd';
 	context.fill();
 	if (cooldown < 0) {
-		cooldown = 300;
+		cooldown = 500;
 		window.piece.update();
 	}
 	window.grid.render(context);
