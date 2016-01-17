@@ -35,10 +35,12 @@ const gameLoop = () => {
 animationFrame.request(gameLoop);
 
 controls.on('move', (direction) => {
+	cooldown = 500;
 	window.piece.move(direction);
 });
 
 controls.on('rotate', () => {
+	cooldown = 500;
 	window.piece.rotate();
 });
 
