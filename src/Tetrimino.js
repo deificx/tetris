@@ -3,6 +3,8 @@
 export default class Tetrimino {
 	constructor(shape) {
 		this.size = 30;
+		this.x = 0;
+		this.y = 0;
 
 		switch (shape) {
 		case 'I':
@@ -71,11 +73,11 @@ export default class Tetrimino {
 	}
 
 	update() {
-
+		this.y += this.size;
 	}
 
 	render(context) {
-		let i, j, x = 0, y = 0;
+		let i, j, x = this.x, y = this.y;
 		for (i = 0; i < this.shape.length; i++) {
 			for (j = 0; j < this.shape[i].length; j++) {
 				if (this.shape[i][j]) {
