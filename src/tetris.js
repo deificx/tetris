@@ -1,6 +1,7 @@
 "use strict";
 
 import canvas from './html.js';
+import controls from './controls';
 import Grid from './Grid';
 import Tetrimino from './Tetrimino';
 import AnimationFrame from 'animation-frame';
@@ -32,3 +33,16 @@ const gameLoop = () => {
 };
 
 animationFrame.request(gameLoop);
+
+controls.on('move', (direction) => {
+	console.log('move '+direction);
+});
+
+controls.on('rotate', () => {
+	window.piece.rotate();
+});
+
+controls.on('new_game', () => {
+	let pieces = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
+	window.piece = new Tetrimino(pieces[Math.floor(Math.random() * pieces.length)]);
+});

@@ -85,7 +85,6 @@ export default class Tetrimino {
 				if (this.shape[i][j]) {
 					context.beginPath();
 					context.rect(x, y, this.size, this.size);
-					context.closePath();
 					context.fill();
 					context.stroke();
 				}

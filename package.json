@@ -21,6 +21,7 @@
     "eslint-loader": "^1.2.0",
     "eslint-plugin-babel": "^3.0.0",
     "eslint-plugin-import": "^0.12.1",
+    "eventemitter3": "^1.1.1",
     "webpack": "^1.12.11"
   },
   "dependencies": {}
