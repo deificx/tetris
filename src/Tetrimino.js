@@ -78,19 +78,20 @@ export default class Tetrimino {
 
 	render(context) {
 		let i, j, x = this.x, y = this.y;
+		context.fillStyle = this.color;
+		context.strokeStyle = '#000';
 		for (i = 0; i < this.shape.length; i++) {
 			for (j = 0; j < this.shape[i].length; j++) {
 				if (this.shape[i][j]) {
 					context.beginPath();
 					context.rect(x, y, this.size, this.size);
-					context.fillStyle = this.color;
+					context.closePath();
 					context.fill();
 					context.stroke();
-					context.closePath();
 				}
 				x += this.size;
 			}
-			x = 0;
+			x = this.x;
 			y += this.size;
 		}
 	}
