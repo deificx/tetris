@@ -4,8 +4,8 @@ export default class Tetrimino {
 	constructor(shape, options) {
 		this.size = options.size;
 		this.width = options.width;
-		this.x = 0;
-		this.y = 0;
+		this.x = Math.floor(options.width / 2) * this.size;
+		this.y = 0 - this.size * 3;
 
 		switch (shape) {
 		case 'I':
@@ -13,6 +13,8 @@ export default class Tetrimino {
 			this.shape = [
 				[1, 1, 1, 1,],
 			];
+			this.x -= this.size * 2;
+			this.y += this.size;
 			break;
 		case 'J':
 			this.color = 'blue';
@@ -20,6 +22,7 @@ export default class Tetrimino {
 				[1, 1, 1,],
 				[0, 0, 1,],
 			];
+			this.x -= this.size * 2;
 			break;
 		case 'L':
 			this.color = 'orange';
@@ -27,6 +30,7 @@ export default class Tetrimino {
 				[1, 1, 1,],
 				[1, 0, 0,],
 			];
+			this.x -= this.size * 2;
 			break;
 		case 'O':
 			this.color = 'yellow';
@@ -34,6 +38,7 @@ export default class Tetrimino {
 				[1, 1,],
 				[1, 1,],
 			];
+			this.x -= this.size;
 			break;
 		case 'S':
 			this.color = 'lime';
@@ -41,6 +46,7 @@ export default class Tetrimino {
 				[0, 1, 1,],
 				[1, 1, 0,],
 			];
+			this.x -= this.size * 2;
 			break;
 		case 'T':
 			this.color = 'purple';
@@ -48,6 +54,7 @@ export default class Tetrimino {
 				[1, 1, 1,],
 				[0, 1, 0,],
 			];
+			this.x -= this.size * 2;
 			break;
 		case 'Z':
 		default:
@@ -56,6 +63,7 @@ export default class Tetrimino {
 				[1, 1, 0,],
 				[0, 1, 1,],
 			];
+			this.x -= this.size * 2;
 			break;
 		}
 	}
