@@ -1,9 +1,10 @@
 "use strict";
 
-var canvas = document.getElementById('tetris');
+let canvas = document.getElementById('tetris');
 
 document.body.style.margin = '0px';
-document.body.style.height = window.innerHeight - 3 + 'px';
+document.body.style.overflowY = 'hidden';
+document.body.style.height = window.innerHeight + 'px';
 
 if (!canvas) {
 	canvas = document.createElement('canvas');

@@ -1,8 +1,9 @@
 "use strict";
 
 export default class Tetrimino {
-	constructor(shape) {
-		this.size = 30;
+	constructor(shape, options) {
+		this.size = options.size;
+		this.width = options.width;
 		this.x = 0;
 		this.y = 0;
 
@@ -67,11 +68,12 @@ export default class Tetrimino {
 			}
 			break;
 		case 'RIGHT':
-			if (this.x + this.shape[0].length * this.size < this.size * 10) {
+			if (this.x + this.shape[0].length * this.size < this.size * this.width) {
 				this.x += this.size;
 			}
 			break;
 		case 'DOWN':
+		default:
 			this.y += this.size;
 			break;
 		}

@@ -6,8 +6,13 @@ import Grid from './Grid';
 import Tetrimino from './Tetrimino';
 import AnimationFrame from 'animation-frame';
 
-window.grid = new Grid(10, 20);
-window.piece = new Tetrimino('I');
+window.options = {
+	height: 20,
+	size: 30,
+	width: 12,
+};
+window.grid = new Grid(window.options);
+window.piece = new Tetrimino('I', window.options);
 
 let cooldown = 500, dt, now, time;
 
@@ -45,6 +50,14 @@ controls.on('rotate', () => {
 });
 
 controls.on('new_game', () => {
-	let pieces = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
-	window.piece = new Tetrimino(pieces[Math.floor(Math.random() * pieces.length)]);
+	let pieces = [
+		'I',
+		'J',
+		'L',
+		'O',
+		'S',
+		'T',
+		'Z',
+	];
+	window.piece = new Tetrimino(pieces[Math.floor(Math.random() * pieces.length)], window.options);
 });
