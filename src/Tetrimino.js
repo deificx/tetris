@@ -123,7 +123,7 @@ export default class Tetrimino {
 	rotate() {
 		let i, j, shape = [];
 		for (i = this.piece.shape.length - 1; i >= 0; i--) {
-			for (j = 0; j < this.shape[i].length; j++) {
+			for (j = 0; j < this.piece.shape[i].length; j++) {
 				if (typeof shape[j] === 'undefined') {
 					shape[j] = [];
 				}
