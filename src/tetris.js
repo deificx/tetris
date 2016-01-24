@@ -6,15 +6,10 @@ import Grid from './Grid';
 import Tetrimino from './Tetrimino';
 import AnimationFrame from 'animation-frame';
 
-const shapes = [
-	'I',
-	'J',
-	'L',
-	'O',
-	'S',
-	'T',
-	'Z',
-];
+const newPiece = (piece) => {
+	console.log('newPiece');
+	console.log(piece);
+};
 
 let options = {
 	height: 20,
@@ -23,7 +18,9 @@ let options = {
 };
 const grid = new Grid(options);
 let pieces = [];
-pieces.unshift(new Tetrimino(shapes[Math.floor(Math.random() * shapes.length)], options));
+pieces.unshift(new Tetrimino(options));
+pieces[0].events.on('piece', newPiece);
+pieces[0].init();
 
 let cooldown = 500, dt, now, time;
 
@@ -44,7 +41,10 @@ const gameLoop = () => {
 		cooldown = 500;
 		pieces[0].update();
 		if (grid.collision(pieces[0].getPosition())) {
-			pieces.unshift(new Tetrimino(shapes[Math.floor(Math.random() * shapes.length)], options));
+			pieces[0].events.removeListener('piece', newPiece);
+			pieces.unshift(new Tetrimino(options));
+			pieces[0].events.on('piece', newPiece);
+			pieces[0].init();
 		}
 	}
 	grid.render(context);
@@ -66,5 +66,8 @@ controls.on('rotate', () => {
 });
 
 controls.on('new_game', () => {
-	pieces.unshift(new Tetrimino(shapes[Math.floor(Math.random() * shapes.length)], options));
+	pieces[0].events.removeListener('piece', newPiece);
+	pieces.unshift(new Tetrimino(options));
+	pieces[0].events.on('piece', newPiece);
+	pieces[0].init();
 });

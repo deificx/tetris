@@ -1,68 +1,101 @@
 "use strict";
 
+import EventEmitter from 'eventemitter3';
+
+const shapes = [
+	{
+		symbol: 'I',
+		color: 'cyan',
+		shape: [
+			[1, 1, 1, 1,],
+		],
+	},
+	{
+		symbol: 'J',
+		color: 'blue',
+		shape: [
+			[1, 1, 1,],
+			[0, 0, 1,],
+		],
+	},
+	{
+		symbol: 'L',
+		color: 'orange',
+		shape: [
+			[1, 1, 1,],
+			[1, 0, 0,],
+		],
+	},
+	{
+		symbol: 'O',
+		color: 'yellow',
+		shape: [
+			[1, 1,],
+			[1, 1,],
+		],
+	},
+	{
+		symbol: 'S',
+		color: 'lime',
+		shape: [
+			[0, 1, 1,],
+			[1, 1, 0,],
+		],
+	},
+	{
+		symbol: 'T',
+		color: 'purple',
+		shape: [
+			[1, 1, 1,],
+			[0, 1, 0,],
+		],
+	},
+	{
+		symbol: 'Z',
+		color: 'red',
+		shape: [
+			[1, 1, 0,],
+			[0, 1, 1,],
+		],
+	},
+];
+
 export default class Tetrimino {
-	constructor(shape, options) {
+	constructor(options) {
+		this.events = new EventEmitter();
 		this.size = options.size;
 		this.width = options.width;
-		this.x = Math.floor(options.width / 2) * this.size;
+	}
+
+	init() {
+		this.x = Math.floor(this.width / 2) * this.size;
 		this.y = 0 - this.size - this.size - this.size;
 
-		switch (shape) {
+		this.piece = shapes[Math.floor(Math.random() * shapes.length)];
+		this.events.emit('piece', this.piece);
+
+		switch (this.piece.symbol) {
 		case 'I':
-			this.color = 'cyan';
-			this.shape = [
-				[1, 1, 1, 1,],
-			];
 			this.x -= this.size * 2;
 			this.y += this.size;
 			break;
 		case 'J':
-			this.color = 'blue';
-			this.shape = [
-				[1, 1, 1,],
-				[0, 0, 1,],
-			];
 			this.x -= this.size * 2;
 			break;
 		case 'L':
-			this.color = 'orange';
-			this.shape = [
-				[1, 1, 1,],
-				[1, 0, 0,],
-			];
 			this.x -= this.size * 2;
 			break;
 		case 'O':
-			this.color = 'yellow';
-			this.shape = [
-				[1, 1,],
-				[1, 1,],
-			];
 			this.x -= this.size;
 			break;
 		case 'S':
-			this.color = 'lime';
-			this.shape = [
-				[0, 1, 1,],
-				[1, 1, 0,],
-			];
 			this.x -= this.size * 2;
 			break;
 		case 'T':
-			this.color = 'purple';
-			this.shape = [
-				[1, 1, 1,],
-				[0, 1, 0,],
-			];
 			this.x -= this.size * 2;
 			break;
 		case 'Z':
 		default:
-			this.color = 'red';
-			this.shape = [
-				[1, 1, 0,],
-				[0, 1, 1,],
-			];
 			this.x -= this.size * 2;
 			break;
 		}
@@ -76,7 +109,7 @@ export default class Tetrimino {
 			}
 			break;
 		case 'RIGHT':
-			if (this.x + this.shape[0].length * this.size < this.size * this.width) {
+			if (this.x + this.piece.shape[0].length * this.size < this.size * this.width) {
 				this.x += this.size;
 			}
 			break;
@@ -89,15 +122,15 @@ export default class Tetrimino {
 
 	rotate() {
 		let i, j, shape = [];
-		for (i = this.shape.length - 1; i >= 0; i--) {
+		for (i = this.piece.shape.length - 1; i >= 0; i--) {
 			for (j = 0; j < this.shape[i].length; j++) {
 				if (typeof shape[j] === 'undefined') {
 					shape[j] = [];
 				}
-				shape[j].push(this.shape[i][j]);
+				shape[j].push(this.piece.shape[i][j]);
 			}
 		}
-		this.shape = shape;
+		this.piece.shape = shape;
 	}
 
 	update() {
@@ -106,11 +139,11 @@ export default class Tetrimino {
 
 	render(context) {
 		let i, j, x = this.x, y = this.y;
-		context.fillStyle = this.color;
+		context.fillStyle = this.piece.color;
 		context.strokeStyle = '#000';
-		for (i = 0; i < this.shape.length; i++) {
-			for (j = 0; j < this.shape[i].length; j++) {
-				if (this.shape[i][j]) {
+		for (i = 0; i < this.piece.shape.length; i++) {
+			for (j = 0; j < this.piece.shape[i].length; j++) {
+				if (this.piece.shape[i][j]) {
 					context.beginPath();
 					context.rect(x, y, this.size, this.size);
 					context.fill();
@@ -125,9 +158,9 @@ export default class Tetrimino {
 
 	getPosition() {
 		let i, j, positions = [], x = this.x, y = this.y;
-		for (i = 0; i < this.shape.length; i++) {
-			for (j = 0; j < this.shape[i].length; j++) {
-				if (this.shape[i][j]) {
+		for (i = 0; i < this.piece.shape.length; i++) {
+			for (j = 0; j < this.piece.shape[i].length; j++) {
+				if (this.piece.shape[i][j]) {
 					positions.push({
 						x: x / this.size,
 						y: y / this.size,
