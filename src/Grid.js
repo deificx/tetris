@@ -13,6 +13,24 @@ export default class Grid {
 		}
 	}
 
+	collision(positions) {
+		let hit = false;
+		positions.map((pos) => {
+			if (pos.y < 0) {
+				return;
+			}
+			if (typeof this.grid[pos.y] === 'undefined') {
+				hit = true;
+				return;
+			}
+			if (this.grid[pos.y][pos.x]) {
+				hit = true;
+				return;
+			}
+		});
+		return hit;
+	}
+
 	render(context) {
 		let i, j;
 		context.strokeStyle = '#bbb';

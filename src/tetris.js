@@ -6,13 +6,24 @@ import Grid from './Grid';
 import Tetrimino from './Tetrimino';
 import AnimationFrame from 'animation-frame';
 
-window.options = {
+const shapes = [
+	'I',
+	'J',
+	'L',
+	'O',
+	'S',
+	'T',
+	'Z',
+];
+
+let options = {
 	height: 20,
 	size: 30,
-	width: 12,
+	width: 10,
 };
-window.grid = new Grid(window.options);
-window.piece = new Tetrimino('I', window.options);
+const grid = new Grid(options);
+let pieces = [];
+pieces.unshift(new Tetrimino(shapes[Math.floor(Math.random() * shapes.length)], options));
 
 let cooldown = 500, dt, now, time;
 
@@ -31,33 +42,29 @@ const gameLoop = () => {
 	context.fill();
 	if (cooldown < 0) {
 		cooldown = 500;
-		window.piece.update();
+		pieces[0].update();
+		if (grid.collision(pieces[0].getPosition())) {
+			pieces.unshift(new Tetrimino(shapes[Math.floor(Math.random() * shapes.length)], options));
+		}
 	}
-	window.grid.render(context);
-	window.piece.render(context);
+	grid.render(context);
+	for (let i = pieces.length - 1; i >= 0; i--) {
+		pieces[i].render(context);
+	}
 };
 
 animationFrame.request(gameLoop);
 
 controls.on('move', (direction) => {
 	cooldown = 500;
-	window.piece.move(direction);
+	pieces[0].move(direction);
 });
 
 controls.on('rotate', () => {
 	cooldown = 500;
-	window.piece.rotate();
+	pieces[0].rotate();
 });
 
 controls.on('new_game', () => {
-	let pieces = [
-		'I',
-		'J',
-		'L',
-		'O',
-		'S',
-		'T',
-		'Z',
-	];
-	window.piece = new Tetrimino(pieces[Math.floor(Math.random() * pieces.length)], window.options);
+	pieces.unshift(new Tetrimino(shapes[Math.floor(Math.random() * shapes.length)], options));
 });

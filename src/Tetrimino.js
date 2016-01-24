@@ -5,7 +5,7 @@ export default class Tetrimino {
 		this.size = options.size;
 		this.width = options.width;
 		this.x = Math.floor(options.width / 2) * this.size;
-		this.y = 0 - this.size * 3;
+		this.y = 0 - this.size - this.size - this.size;
 
 		switch (shape) {
 		case 'I':
@@ -121,5 +121,23 @@ export default class Tetrimino {
 			x = this.x;
 			y += this.size;
 		}
+	}
+
+	getPosition() {
+		let i, j, positions = [], x = this.x, y = this.y;
+		for (i = 0; i < this.shape.length; i++) {
+			for (j = 0; j < this.shape[i].length; j++) {
+				if (this.shape[i][j]) {
+					positions.push({
+						x: x / this.size,
+						y: y / this.size,
+					});
+				}
+				x += this.size;
+			}
+			x = this.x;
+			y += this.size;
+		}
+		return positions;
 	}
 }
