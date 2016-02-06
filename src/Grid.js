@@ -72,7 +72,7 @@ export default class Grid {
 
 	render(context) {
 		let i, j;
-		context.strokeStyle = '#bbb';
+		context.strokeStyle = '#111';
 		for (i = 0; i < this.grid.length; i++) {
 			for (j = 0; j < this.grid[i].length; j++) {
 				context.beginPath();

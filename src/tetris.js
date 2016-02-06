@@ -68,7 +68,7 @@ const gameLoop = () => {
 	animationFrame.request(gameLoop);
 	context.beginPath();
 	context.rect(0, 0, canvas.width, canvas.height);
-	context.fillStyle = '#ddd';
+	context.fillStyle = '#000';
 	context.fill();
 	grid.render(context);
 };
