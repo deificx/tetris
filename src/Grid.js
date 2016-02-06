@@ -19,6 +19,31 @@ export default class Grid {
 		this.prevPositions = [];
 	}
 
+	_checkLines() {
+		let i, j, n, p;
+		for (i = 0; i < this.height; i++) {
+			let full = true;
+			for (j = 0; j < this.width; j++) {
+				if (!this.grid[i][j].hit) {
+					full = false;
+				}
+			}
+			if (full) {
+				n = i + 1;
+				while (n--) {
+					this.grid[n] = this.grid[n-1];
+				}
+				this.grid[0] = [];
+				for (p = 0; p < this.width; p++) {
+					this.grid[0].push({
+						color: null,
+						hit: false,
+					});
+				}
+			}
+		}
+	}
+
 	collision(positions) {
 		let hit = false;
 		positions.map((pos) => {
@@ -69,6 +94,7 @@ export default class Grid {
 			}
 			this.grid[pos.y][pos.x].hit = true;
 		});
+		this._checkLines();
 		this.prevPositions = [];
 		this.piece = piece;
 	}
