@@ -10,22 +10,18 @@ listener.register_many([
 	{
 		keys: 'up',
 		'on_keydown': () => { events.emit('rotate'); },
-		'prevent_repeat': true,
 	},
 	{
 		keys: 'right',
 		'on_keydown': () => { events.emit('move', 'RIGHT'); },
-		'prevent_repeat': true,
 	},
 	{
 		keys: 'down',
 		'on_keydown': () => { events.emit('move', 'DOWN'); },
-		'prevent_repeat': true,
 	},
 	{
 		keys: 'left',
 		'on_keydown': () => { events.emit('move', 'LEFT'); },
-		'prevent_repeat': true,
 	},
 	{
 		keys: 'enter',
