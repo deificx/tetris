@@ -11,7 +11,7 @@ let options = {
 	size: 30,
 	width: 10,
 };
-const grid = new Grid(options);
+let grid = new Grid(options);
 
 const onPiece = (piece) => {
 	grid.setPiece(piece);
@@ -89,12 +89,16 @@ controls.on('rotate', () => {
 });
 
 controls.on('new_game', () => {
-	pieces[0].events.removeListener('piece', onPiece);
-	pieces[0].events.removeListener('positions', onPositions);
-	pieces[0].events.removeListener('test', onPiece);
+	if (timeout) {
+		clearTimeout(timeout);
+		timeout = null;
+	}
+	grid = new Grid(options);
+	pieces = [];
 	pieces.unshift(new Tetrimino(options));
 	pieces[0].events.on('piece', onPiece);
 	pieces[0].events.on('positions', onPositions);
 	pieces[0].events.on('test', onTest);
 	pieces[0].init();
+	update();
 });
