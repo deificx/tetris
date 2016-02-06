@@ -5,6 +5,7 @@
   "main": "src/tetris",
   "scripts": {
     "start": "./node_modules/.bin/webpack --watch",
+    "build": "./node_modules/.bin/webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Even Alander <even@alander.org>",
