@@ -13,18 +13,24 @@ let options = {
 };
 const grid = new Grid(options);
 
-const newPiece = (piece) => {
+const onPiece = (piece) => {
 	grid.setPiece(piece);
 };
 
+const onPositions = (positions) => {
+	grid.setPosition(positions);
+};
+
 const onTest = (position, scenario) => {
-	if (grid.collision(position.position)) {
+	if (grid.collision(position.positions)) {
 		pieces[0].deny();
 		if (scenario === 'update') {
-			pieces[0].events.removeListener('piece', newPiece);
-			pieces[0].events.removeListener('test', newPiece);
+			pieces[0].events.removeListener('piece', onPiece);
+			pieces[0].events.removeListener('positions', onPositions);
+			pieces[0].events.removeListener('test', onPiece);
 			pieces.unshift(new Tetrimino(options));
-			pieces[0].events.on('piece', newPiece);
+			pieces[0].events.on('piece', onPiece);
+			pieces[0].events.on('positions', onPositions);
 			pieces[0].events.on('test', onTest);
 			pieces[0].init();
 		}
@@ -35,7 +41,8 @@ const onTest = (position, scenario) => {
 
 let pieces = [];
 pieces.unshift(new Tetrimino(options));
-pieces[0].events.on('piece', newPiece);
+pieces[0].events.on('piece', onPiece);
+pieces[0].events.on('positions', onPositions);
 pieces[0].events.on('test', onTest);
 pieces[0].init();
 
@@ -85,8 +92,12 @@ controls.on('rotate', () => {
 });
 
 controls.on('new_game', () => {
-	pieces[0].events.removeListener('piece', newPiece);
+	pieces[0].events.removeListener('piece', onPiece);
+	pieces[0].events.removeListener('positions', onPositions);
+	pieces[0].events.removeListener('test', onPiece);
 	pieces.unshift(new Tetrimino(options));
-	pieces[0].events.on('piece', newPiece);
+	pieces[0].events.on('piece', onPiece);
+	pieces[0].events.on('positions', onPositions);
+	pieces[0].events.on('test', onTest);
 	pieces[0].init();
 });

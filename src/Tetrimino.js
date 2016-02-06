@@ -70,7 +70,7 @@ export default class Tetrimino {
 
 	_store(shape, x, y) {
 		return {
-			position: this.getPosition(),
+			positions: this.getPosition(),
 			shape: shape,
 			x: x,
 			y: y,
@@ -83,7 +83,7 @@ export default class Tetrimino {
 
 	accept() {
 		this.storage = this._store(this.piece.shape, this.x, this.y);
-		this.events.emit('position', this.storage);
+		this.events.emit('positions', this.storage.positions);
 	}
 
 	deny() {

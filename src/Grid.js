@@ -10,9 +10,13 @@ export default class Grid {
 		for (i = 0; i < this.height; i++) {
 			this.grid[i] = [];
 			for (j = 0; j < this.width; j++) {
-				this.grid[i].push(0);
+				this.grid[i].push({
+					color: null,
+					hit: false,
+				});
 			}
 		}
+		this.prevPositions = [];
 	}
 
 	collision(positions) {
@@ -33,7 +37,7 @@ export default class Grid {
 				hit = true;
 				return;
 			}
-			if (this.grid[pos.y][pos.x]) {
+			if (this.grid[pos.y][pos.x].hit) {
 				hit = true;
 				return;
 			}
@@ -54,6 +58,28 @@ export default class Grid {
 	}
 
 	setPiece(piece) {
+		this.prevPositions.map((pos) => {
+			if (pos.y < 0) {
+				return;
+			}
+			this.grid[pos.y][pos.x].hit = true;
+		});
 		this.piece = piece;
+	}
+
+	setPosition(positions) {
+		this.prevPositions.map((pos) => {
+			if (pos.y < 0) {
+				return;
+			}
+			this.grid[pos.y][pos.x].color = null;
+		});
+		this.prevPositions = positions;
+		positions.map((pos) => {
+			if (pos.y < 0) {
+				return;
+			}
+			this.grid[pos.y][pos.x].color = this.piece.color;
+		});
 	}
 }
