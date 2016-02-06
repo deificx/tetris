@@ -39,25 +39,25 @@ pieces[0].events.on('piece', newPiece);
 pieces[0].events.on('test', onTest);
 pieces[0].init();
 
-let cooldown = 500, dt, now, time;
+let cooldown = 500, timeout;
+const update = () => {
+	if (timeout) {
+		clearTimeout(timeout);
+		timeout = null;
+	}
+	pieces[0].update();
+	timeout = setTimeout(update, cooldown);
+};
+update();
 
 const context = canvas.getContext('2d');
 const animationFrame = new AnimationFrame();
 const gameLoop = () => {
-	now = new Date().getTime();
-	dt = now - (time || now);
-	time = now;
-	cooldown -= dt;
-
 	animationFrame.request(gameLoop);
 	context.beginPath();
 	context.rect(0, 0, canvas.width, canvas.height);
 	context.fillStyle = '#ddd';
 	context.fill();
-	if (cooldown < 0) {
-		cooldown = 500;
-		pieces[0].update();
-	}
 	grid.render(context);
 	for (let i = pieces.length - 1; i >= 0; i--) {
 		pieces[i].render(context);
@@ -67,12 +67,20 @@ const gameLoop = () => {
 animationFrame.request(gameLoop);
 
 controls.on('move', (direction) => {
-	cooldown = 500;
+	if (timeout) {
+		clearTimeout(timeout);
+		timeout = null;
+	}
+	timeout = setTimeout(update, cooldown);
 	pieces[0].move(direction);
 });
 
 controls.on('rotate', () => {
-	cooldown = 500;
+	if (timeout) {
+		clearTimeout(timeout);
+		timeout = null;
+	}
+	timeout = setTimeout(update, cooldown);
 	pieces[0].rotate();
 });
 
