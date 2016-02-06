@@ -65,6 +65,39 @@ export default class Tetrimino {
 		this.events = new EventEmitter();
 		this.size = options.size;
 		this.width = options.width;
+		this.storage = {
+			shape: [],
+			x: 0,
+			y: 0,
+		};
+	}
+
+	_store() {
+		this.storage = {
+			position: this.getPosition(),
+			shape: this.piece.shape,
+			x: this.x,
+			y: this.y,
+		};
+		this.events.emit('position', this.storage);
+	}
+
+	getPosition() {
+		let i, j, positions = [], x = this.x, y = this.y;
+		for (i = 0; i < this.piece.shape.length; i++) {
+			for (j = 0; j < this.piece.shape[i].length; j++) {
+				if (this.piece.shape[i][j]) {
+					positions.push({
+						x: x,
+						y: y,
+					});
+				}
+				x++;
+			}
+			x = this.x;
+			y++;
+		}
+		return positions;
 	}
 
 	init() {
@@ -121,23 +154,6 @@ export default class Tetrimino {
 		}
 	}
 
-	rotate() {
-		let i, j, shape = [];
-		for (i = this.piece.shape.length - 1; i >= 0; i--) {
-			for (j = 0; j < this.piece.shape[i].length; j++) {
-				if (typeof shape[j] === 'undefined') {
-					shape[j] = [];
-				}
-				shape[j].push(this.piece.shape[i][j]);
-			}
-		}
-		this.piece.shape = shape;
-	}
-
-	update() {
-		this.y++;
-	}
-
 	render(context) {
 		let i, j, x = this.x, y = this.y;
 		context.fillStyle = this.piece.color;
@@ -157,21 +173,20 @@ export default class Tetrimino {
 		}
 	}
 
-	getPosition() {
-		let i, j, positions = [], x = this.x, y = this.y;
-		for (i = 0; i < this.piece.shape.length; i++) {
+	rotate() {
+		let i, j, shape = [];
+		for (i = this.piece.shape.length - 1; i >= 0; i--) {
 			for (j = 0; j < this.piece.shape[i].length; j++) {
-				if (this.piece.shape[i][j]) {
-					positions.push({
-						x: x,
-						y: y,
-					});
+				if (typeof shape[j] === 'undefined') {
+					shape[j] = [];
 				}
-				x++;
+				shape[j].push(this.piece.shape[i][j]);
 			}
-			x = this.x;
-			y++;
 		}
-		return positions;
+		this.piece.shape = shape;
+	}
+
+	update() {
+		this.y++;
 	}
 }
