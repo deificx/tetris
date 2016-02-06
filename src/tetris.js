@@ -6,20 +6,37 @@ import Grid from './Grid';
 import Tetrimino from './Tetrimino';
 import AnimationFrame from 'animation-frame';
 
-const newPiece = (piece) => {
-	console.log('newPiece');
-	console.log(piece);
-};
-
 let options = {
 	height: 20,
 	size: 30,
 	width: 10,
 };
 const grid = new Grid(options);
+
+const newPiece = (piece) => {
+	grid.setPiece(piece);
+};
+
+const onTest = (position, scenario) => {
+	if (grid.collision(position.position)) {
+		pieces[0].deny();
+		if (scenario === 'update') {
+			pieces[0].events.removeListener('piece', newPiece);
+			pieces[0].events.removeListener('test', newPiece);
+			pieces.unshift(new Tetrimino(options));
+			pieces[0].events.on('piece', newPiece);
+			pieces[0].events.on('test', onTest);
+			pieces[0].init();
+		}
+	} else {
+		pieces[0].accept();
+	}
+};
+
 let pieces = [];
 pieces.unshift(new Tetrimino(options));
 pieces[0].events.on('piece', newPiece);
+pieces[0].events.on('test', onTest);
 pieces[0].init();
 
 let cooldown = 500, dt, now, time;
@@ -40,12 +57,6 @@ const gameLoop = () => {
 	if (cooldown < 0) {
 		cooldown = 500;
 		pieces[0].update();
-		if (grid.collision(pieces[0].getPosition())) {
-			pieces[0].events.removeListener('piece', newPiece);
-			pieces.unshift(new Tetrimino(options));
-			pieces[0].events.on('piece', newPiece);
-			pieces[0].init();
-		}
 	}
 	grid.render(context);
 	for (let i = pieces.length - 1; i >= 0; i--) {

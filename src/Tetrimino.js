@@ -65,21 +65,31 @@ export default class Tetrimino {
 		this.events = new EventEmitter();
 		this.size = options.size;
 		this.width = options.width;
-		this.storage = {
-			shape: [],
-			x: 0,
-			y: 0,
+		this.storage = {};
+	}
+
+	_store(shape, x, y) {
+		return {
+			position: this.getPosition(),
+			shape: shape,
+			x: x,
+			y: y,
 		};
 	}
 
-	_store() {
-		this.storage = {
-			position: this.getPosition(),
-			shape: this.piece.shape,
-			x: this.x,
-			y: this.y,
-		};
+	_test(scenario) {
+		this.events.emit('test', this._store(this.piece.shape, this.x, this.y), scenario);
+	}
+
+	accept() {
+		this.storage = this._store(this.piece.shape, this.x, this.y);
 		this.events.emit('position', this.storage);
+	}
+
+	deny() {
+		this.piece.shape = this.storage.shape;
+		this.x = this.storage.x;
+		this.y = this.storage.y;
 	}
 
 	getPosition() {
@@ -133,25 +143,24 @@ export default class Tetrimino {
 			this.x -= 2;
 			break;
 		}
+
+		this.accept();
 	}
 
 	move(direction) {
 		switch (direction) {
 		case 'LEFT':
-			if (this.x > 0) {
-				this.x--;
-			}
+			this.x--;
 			break;
 		case 'RIGHT':
-			if (this.x + this.piece.shape[0].length < this.width) {
-				this.x++;
-			}
+			this.x++;
 			break;
 		case 'DOWN':
 		default:
 			this.y++;
 			break;
 		}
+		this._test();
 	}
 
 	render(context) {
@@ -184,9 +193,11 @@ export default class Tetrimino {
 			}
 		}
 		this.piece.shape = shape;
+		this._test();
 	}
 
 	update() {
 		this.y++;
+		this._test('update');
 	}
 }

@@ -4,10 +4,12 @@ export default class Grid {
 	constructor(options) {
 		let i, j;
 		this.grid = [];
+		this.height = options.height;
+		this.width = options.width;
 		this.size = options.size;
-		for (i = 0; i < options.height; i++) {
+		for (i = 0; i < this.height; i++) {
 			this.grid[i] = [];
-			for (j = 0; j < options.width; j++) {
+			for (j = 0; j < this.width; j++) {
 				this.grid[i].push(0);
 			}
 		}
@@ -17,6 +19,14 @@ export default class Grid {
 		let hit = false;
 		positions.map((pos) => {
 			if (pos.y < 0) {
+				return;
+			}
+			if (pos.y >= this.height) {
+				hit = true;
+				return;
+			}
+			if (pos.x < 0 || pos.x >= this.width) {
+				hit = true;
 				return;
 			}
 			if (typeof this.grid[pos.y] === 'undefined') {
@@ -41,5 +51,9 @@ export default class Grid {
 				context.stroke();
 			}
 		}
+	}
+
+	setPiece(piece) {
+		this.piece = piece;
 	}
 }
