@@ -68,35 +68,36 @@ export default class Tetrimino {
 	}
 
 	init() {
-		this.x = Math.floor(this.width / 2) * this.size;
-		this.y = 0 - this.size - this.size - this.size;
+		const startPosition = -3;
+		this.x = this.width / 2;
+		this.y = 0 + startPosition;
 
 		this.piece = shapes[Math.floor(Math.random() * shapes.length)];
 		this.events.emit('piece', this.piece);
 
 		switch (this.piece.symbol) {
 		case 'I':
-			this.x -= this.size * 2;
-			this.y += this.size;
+			this.x -= 2;
+			this.y++;
 			break;
 		case 'J':
-			this.x -= this.size * 2;
+			this.x -= 2;
 			break;
 		case 'L':
-			this.x -= this.size * 2;
+			this.x -= 2;
 			break;
 		case 'O':
-			this.x -= this.size;
+			this.x -= 1;
 			break;
 		case 'S':
-			this.x -= this.size * 2;
+			this.x -= 2;
 			break;
 		case 'T':
-			this.x -= this.size * 2;
+			this.x -= 2;
 			break;
 		case 'Z':
 		default:
-			this.x -= this.size * 2;
+			this.x -= 2;
 			break;
 		}
 	}
@@ -105,17 +106,17 @@ export default class Tetrimino {
 		switch (direction) {
 		case 'LEFT':
 			if (this.x > 0) {
-				this.x -= this.size;
+				this.x--;
 			}
 			break;
 		case 'RIGHT':
-			if (this.x + this.piece.shape[0].length * this.size < this.size * this.width) {
-				this.x += this.size;
+			if (this.x + this.piece.shape[0].length < this.width) {
+				this.x++;
 			}
 			break;
 		case 'DOWN':
 		default:
-			this.y += this.size;
+			this.y++;
 			break;
 		}
 	}
@@ -134,7 +135,7 @@ export default class Tetrimino {
 	}
 
 	update() {
-		this.y += this.size;
+		this.y++;
 	}
 
 	render(context) {
@@ -145,14 +146,14 @@ export default class Tetrimino {
 			for (j = 0; j < this.piece.shape[i].length; j++) {
 				if (this.piece.shape[i][j]) {
 					context.beginPath();
-					context.rect(x, y, this.size, this.size);
+					context.rect(x * this.size, y * this.size, this.size, this.size);
 					context.fill();
 					context.stroke();
 				}
-				x += this.size;
+				x++;
 			}
 			x = this.x;
-			y += this.size;
+			y++;
 		}
 	}
 
@@ -162,14 +163,14 @@ export default class Tetrimino {
 			for (j = 0; j < this.piece.shape[i].length; j++) {
 				if (this.piece.shape[i][j]) {
 					positions.push({
-						x: x / this.size,
-						y: y / this.size,
+						x: x,
+						y: y,
 					});
 				}
-				x += this.size;
+				x++;
 			}
 			x = this.x;
-			y += this.size;
+			y++;
 		}
 		return positions;
 	}
