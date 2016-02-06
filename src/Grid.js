@@ -52,7 +52,12 @@ export default class Grid {
 			for (j = 0; j < this.grid[i].length; j++) {
 				context.beginPath();
 				context.rect(this.size * j, this.size * i, this.size, this.size);
-				context.stroke();
+				if (this.grid[i][j].color) {
+					context.fillStyle = this.grid[i][j].color;
+					context.fill();
+				} else {
+					context.stroke();
+				}
 			}
 		}
 	}
@@ -64,6 +69,7 @@ export default class Grid {
 			}
 			this.grid[pos.y][pos.x].hit = true;
 		});
+		this.prevPositions = [];
 		this.piece = piece;
 	}
 

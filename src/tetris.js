@@ -66,9 +66,6 @@ const gameLoop = () => {
 	context.fillStyle = '#ddd';
 	context.fill();
 	grid.render(context);
-	for (let i = pieces.length - 1; i >= 0; i--) {
-		pieces[i].render(context);
-	}
 };
 
 animationFrame.request(gameLoop);
