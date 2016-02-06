@@ -11,6 +11,11 @@ let options = {
 	size: 30,
 	width: 10,
 };
+
+canvas.width = options.width * options.size;
+canvas.height = options.height * options.size;
+canvas.style.marginLeft = Math.round(window.innerWidth / 2 - canvas.width / 2) + 'px';
+
 let grid = new Grid(options);
 
 const onPiece = (piece) => {
