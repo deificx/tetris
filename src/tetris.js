@@ -20,13 +20,14 @@ const context = canvas.getContext('2d');
 const animationFrame = new AnimationFrame();
 
 let cooldown,
+	frameId,
 	grid,
 	pieces = [],
 	points,
 	timeout;
 
 const gameLoop = () => {
-	animationFrame.request(gameLoop);
+	frameId = animationFrame.request(gameLoop);
 	context.beginPath();
 	context.rect(0, 0, canvas.width, canvas.height);
 	context.fillStyle = '#000';
@@ -65,6 +66,25 @@ const onScore = (lines) => {
 	console.log(points);
 };
 
+const onEnd = () => {
+	let boxHeight = 60;
+	if (frameId) {
+		animationFrame.cancel(frameId);
+		frameId = null;
+	}
+	context.beginPath();
+	context.fillStyle = 'rgba(255,255,255,0.5)';
+	context.rect(0, canvas.height / 2 - boxHeight / 2, canvas.width, boxHeight);
+	context.fill();
+
+	context.beginPath();
+	context.font = "48px sans-serif";
+	context.textAlign = 'center';
+	context.textBaseline = 'middle';
+	context.fillStyle = '#f00';
+	context.fillText("Game over", canvas.width / 2, canvas.height / 2);
+};
+
 const update = () => {
 	if (timeout) {
 		clearTimeout(timeout);
@@ -75,6 +95,11 @@ const update = () => {
 };
 
 const init = () => {
+	if (frameId) {
+		animationFrame.cancel(frameId);
+		frameId = null;
+	}
+
 	if (timeout) {
 		clearTimeout(timeout);
 		timeout = null;
@@ -85,9 +110,11 @@ const init = () => {
 
 	if (grid) {
 		grid.events.removeListener('score', onScore);
+		grid.events.removeListener('end', onEnd);
 	}
 	grid = new Grid(options);
 	grid.events.on('score', onScore);
+	grid.events.on('end', onEnd);
 
 	if (pieces[0]) {
 		pieces[0].events.removeListener('piece', onPiece);
@@ -101,7 +128,7 @@ const init = () => {
 	pieces[0].events.on('test', onTest);
 	pieces[0].init();
 
-	animationFrame.request(gameLoop);
+	frameId = animationFrame.request(gameLoop);
 	update();
 };
 

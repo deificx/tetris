@@ -97,6 +97,7 @@ export default class Grid {
 	setPiece(piece) {
 		this.prevPositions.map((pos) => {
 			if (pos.y < 0) {
+				this.events.emit('end');
 				return;
 			}
 			this.grid[pos.y][pos.x].hit = true;
