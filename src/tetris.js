@@ -10,9 +10,10 @@ let options = {
 	height: 20,
 	size: 30,
 	width: 10,
+	sidebar: 100,
 };
 
-canvas.width = options.width * options.size;
+canvas.width = options.width * options.size + options.sidebar;
 canvas.height = options.height * options.size;
 canvas.style.marginLeft = Math.round(window.innerWidth / 2 - canvas.width / 2) + 'px';
 
@@ -22,6 +23,7 @@ const animationFrame = new AnimationFrame();
 let cooldown,
 	frameId,
 	grid,
+	padding = 25,
 	pieces = [],
 	points,
 	timeout;
@@ -29,9 +31,20 @@ let cooldown,
 const gameLoop = () => {
 	frameId = animationFrame.request(gameLoop);
 	context.beginPath();
-	context.rect(0, 0, canvas.width, canvas.height);
+	context.rect(0, 0, canvas.width - options.sidebar, canvas.height);
 	context.fillStyle = '#000';
 	context.fill();
+	context.beginPath();
+	context.rect(canvas.width - options.sidebar, 0, options.sidebar, canvas.height);
+	context.fillStyle = '#222';
+	context.fill();
+	context.beginPath();
+	context.font = "16px sans-serif";
+	context.textAlign = 'center';
+	context.textBaseline = 'middle';
+	context.fillStyle = '#ddd';
+	context.fillText('points', canvas.width - options.sidebar + options.sidebar / 2, padding);
+	context.fillText(points, canvas.width - options.sidebar + options.sidebar / 2, padding * 2);
 	grid.render(context);
 };
 
@@ -63,7 +76,6 @@ const onTest = (position, scenario) => {
 
 const onScore = (lines) => {
 	points += lines * lines;
-	console.log(points);
 };
 
 const onEnd = () => {
@@ -73,8 +85,8 @@ const onEnd = () => {
 		frameId = null;
 	}
 	context.beginPath();
+	context.rect(0, canvas.height / 2 - boxHeight / 2, canvas.width - options.sidebar, boxHeight);
 	context.fillStyle = 'rgba(255,255,255,0.5)';
-	context.rect(0, canvas.height / 2 - boxHeight / 2, canvas.width, boxHeight);
 	context.fill();
 
 	context.beginPath();
@@ -82,7 +94,7 @@ const onEnd = () => {
 	context.textAlign = 'center';
 	context.textBaseline = 'middle';
 	context.fillStyle = '#f00';
-	context.fillText("Game over", canvas.width / 2, canvas.height / 2);
+	context.fillText("Game over", ( canvas.width - options.sidebar ) / 2, canvas.height / 2);
 };
 
 const update = () => {
