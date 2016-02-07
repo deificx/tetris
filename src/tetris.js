@@ -16,8 +16,23 @@ canvas.width = options.width * options.size;
 canvas.height = options.height * options.size;
 canvas.style.marginLeft = Math.round(window.innerWidth / 2 - canvas.width / 2) + 'px';
 
-let grid = new Grid(options);
-let points = 0;
+const context = canvas.getContext('2d');
+const animationFrame = new AnimationFrame();
+
+let cooldown,
+	grid,
+	pieces = [],
+	points,
+	timeout;
+
+const gameLoop = () => {
+	animationFrame.request(gameLoop);
+	context.beginPath();
+	context.rect(0, 0, canvas.width, canvas.height);
+	context.fillStyle = '#000';
+	context.fill();
+	grid.render(context);
+};
 
 const onPiece = (piece) => {
 	grid.setPiece(piece);
@@ -50,16 +65,6 @@ const onScore = (lines) => {
 	console.log(points);
 };
 
-grid.events.on('score', onScore);
-
-let pieces = [];
-pieces.unshift(new Tetrimino(options));
-pieces[0].events.on('piece', onPiece);
-pieces[0].events.on('positions', onPositions);
-pieces[0].events.on('test', onTest);
-pieces[0].init();
-
-let cooldown = 500, timeout;
 const update = () => {
 	if (timeout) {
 		clearTimeout(timeout);
@@ -68,20 +73,39 @@ const update = () => {
 	pieces[0].update();
 	timeout = setTimeout(update, cooldown);
 };
-update();
 
-const context = canvas.getContext('2d');
-const animationFrame = new AnimationFrame();
-const gameLoop = () => {
+const init = () => {
+	if (timeout) {
+		clearTimeout(timeout);
+		timeout = null;
+	}
+
+	cooldown = 500;
+	points = 0;
+
+	if (grid) {
+		grid.events.removeListener('score', onScore);
+	}
+	grid = new Grid(options);
+	grid.events.on('score', onScore);
+
+	if (pieces[0]) {
+		pieces[0].events.removeListener('piece', onPiece);
+		pieces[0].events.removeListener('positions', onPositions);
+		pieces[0].events.removeListener('test', onPiece);
+		pieces = [];
+	}
+	pieces.unshift(new Tetrimino(options));
+	pieces[0].events.on('piece', onPiece);
+	pieces[0].events.on('positions', onPositions);
+	pieces[0].events.on('test', onTest);
+	pieces[0].init();
+
 	animationFrame.request(gameLoop);
-	context.beginPath();
-	context.rect(0, 0, canvas.width, canvas.height);
-	context.fillStyle = '#000';
-	context.fill();
-	grid.render(context);
+	update();
 };
 
-animationFrame.request(gameLoop);
+init();
 
 controls.on('move', (direction) => {
 	if (timeout) {
@@ -102,18 +126,5 @@ controls.on('rotate', () => {
 });
 
 controls.on('new_game', () => {
-	if (timeout) {
-		clearTimeout(timeout);
-		timeout = null;
-	}
-	grid.events.removeListener('score', onScore);
-	grid = new Grid(options);
-	grid.events.on('score', onScore);
-	pieces = [];
-	pieces.unshift(new Tetrimino(options));
-	pieces[0].events.on('piece', onPiece);
-	pieces[0].events.on('positions', onPositions);
-	pieces[0].events.on('test', onTest);
-	pieces[0].init();
-	update();
+	init();
 });
