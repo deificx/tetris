@@ -15,7 +15,8 @@ let options = {
 
 canvas.width = options.width * options.size + options.sidebar;
 canvas.height = options.height * options.size;
-canvas.style.marginLeft = Math.round(window.innerWidth / 2 - canvas.width / 2) + 'px';
+canvas.style.display = 'block';
+canvas.style.margin = '0 auto';
 
 const context = canvas.getContext('2d');
 const animationFrame = new AnimationFrame();
