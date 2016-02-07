@@ -1,5 +1,9 @@
 "use strict";
 
+let css = document.createElement('style');
+css.innerHTML = 'a:link {color:#fff} a:visited {color:#ddd} a:hover {color:orange}';
+document.head.appendChild(css);
+
 document.body.style.backgroundColor = '#333';
 document.body.style.margin = '0px';
 
@@ -16,5 +20,12 @@ if (!canvas) {
 	canvas.id = 'tetris';
 	document.body.appendChild(canvas);
 }
+
+let footer = document.createElement('p');
+footer.style.color = '#ddd';
+footer.style.fontFamily = 'sans-serif';
+footer.style.textAlign = 'center';
+footer.innerHTML = 'Use the arrow keys to control <br /> Press Enter/Space to start a new game <br /> <a href="https://deificx.github.io/">https://deificx.github.io/</a>';
+document.body.appendChild(footer);
 
 export default canvas;
