@@ -148,6 +148,7 @@ export default class Tetrimino {
 	}
 
 	move(direction) {
+		let scenario = '';
 		switch (direction) {
 		case 'LEFT':
 			this.x--;
@@ -157,10 +158,11 @@ export default class Tetrimino {
 			break;
 		case 'DOWN':
 		default:
+			scenario = 'update';
 			this.y++;
 			break;
 		}
-		this._test();
+		this._test(scenario);
 	}
 
 	rotate() {

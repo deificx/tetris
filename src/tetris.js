@@ -17,6 +17,7 @@ canvas.height = options.height * options.size;
 canvas.style.marginLeft = Math.round(window.innerWidth / 2 - canvas.width / 2) + 'px';
 
 let grid = new Grid(options);
+let points = 0;
 
 const onPiece = (piece) => {
 	grid.setPiece(piece);
@@ -43,6 +44,13 @@ const onTest = (position, scenario) => {
 		pieces[0].accept();
 	}
 };
+
+const onScore = (lines) => {
+	points += lines * lines;
+	console.log(points);
+};
+
+grid.events.on('score', onScore);
 
 let pieces = [];
 pieces.unshift(new Tetrimino(options));
@@ -98,7 +106,9 @@ controls.on('new_game', () => {
 		clearTimeout(timeout);
 		timeout = null;
 	}
+	grid.events.removeListener('score', onScore);
 	grid = new Grid(options);
+	grid.events.on('score', onScore);
 	pieces = [];
 	pieces.unshift(new Tetrimino(options));
 	pieces[0].events.on('piece', onPiece);

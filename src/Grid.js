@@ -1,8 +1,11 @@
 "use strict";
 
+import EventEmitter from 'eventemitter3';
+
 export default class Grid {
 	constructor(options) {
 		let i, j;
+		this.events = new EventEmitter();
 		this.grid = [];
 		this.height = options.height;
 		this.width = options.width;
@@ -20,7 +23,7 @@ export default class Grid {
 	}
 
 	_checkLines() {
-		let i, j, n, p;
+		let i, j, l = 0, n, p;
 		for (i = 0; i < this.height; i++) {
 			let full = true;
 			for (j = 0; j < this.width; j++) {
@@ -29,6 +32,7 @@ export default class Grid {
 				}
 			}
 			if (full) {
+				l++;
 				n = i + 1;
 				while (n--) {
 					this.grid[n] = this.grid[n-1];
@@ -41,6 +45,9 @@ export default class Grid {
 					});
 				}
 			}
+		}
+		if (l) {
+			this.events.emit('score', l);
 		}
 	}
 
