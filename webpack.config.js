@@ -1,39 +1,31 @@
-var path = require('path');
-var webpack = require('webpack');
+const { resolve } = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-	entry: path.join(__dirname, 'src', 'tetris.js'),
-	output: {
-		filename: 'tetris.js',
-		path: path.join(__dirname, 'dist'),
-		publicPath: '',
-	},
-	module: {
-		preLoaders: [
-			{
-				test: /\.js$/,
-				include: path.join(__dirname, 'src'),
-				loader: 'eslint?{fix:true}'
-			}
-		],
-		loaders: [
-			{
-				test: /\.js$/,
-				include: path.join(__dirname, 'src'),
-				loader: 'babel',
-				query: {
-					plugins: ['transform-runtime'],
-					presets: ['es2015']
-				}
-			}
-		]
-	},
-	plugins: [
-		new webpack.optimize.OccurenceOrderPlugin(true),
-		new webpack.optimize.UglifyJsPlugin({
-			output: {
-				comments: false
-			}
-		}),
-	]
-}
+  devtool: "source-map",
+  entry: resolve(__dirname, "src", "tetris.js"),
+  output: {
+    filename: "tetris.js",
+    path: resolve(__dirname),
+    publicPath: "",
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        loader: "eslint-loader?{fix:true}",
+        enforce: "pre",
+      },
+      {
+        test: /\.js$/,
+        loader: "babel-loader",
+      },
+    ],
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: resolve(__dirname, "src", "index.html"),
+      title: "Tetris",
+    }),
+  ],
+};

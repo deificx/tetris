@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <%= htmlWebpackPlugin.tags.headTags %>
+    <style type="text/css">
+      body {
+        background-color: #333;
+        color: #ddd;
+        font-family: sans-serif;
+        margin: 0;
+      }
+
+      a:link {
+        color: #fff;
+      }
+
+      a:visited {
+        color: #ddd;
+      }
+
+      a:hover {
+        color: orange;
+      }
+
+      h1,
+      p {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Tetris</h1>
+    <canvas id="tetris"></canvas>
+    <p>
+      Use the arrow keys to control <br />
+      Press Enter/Space to start a new game <br />
+      <a href="https://deificx.github.io/">https://deificx.github.io/</a>
+    </p>
+    <%= htmlWebpackPlugin.tags.bodyTags %>
+  </body>
+</html>
