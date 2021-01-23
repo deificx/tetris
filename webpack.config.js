@@ -9,12 +9,16 @@ module.exports = {
     path: resolve(__dirname),
     publicPath: "",
   },
+  mode: "production",
   module: {
     rules: [
       {
         test: /\.js$/,
-        loader: "eslint-loader?{fix:true}",
+        loader: "eslint-loader",
         enforce: "pre",
+        options: {
+          fix: true,
+        },
       },
       {
         test: /\.js$/,
