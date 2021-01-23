@@ -1,0 +1,34 @@
+name: Build and push to gh-pages
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Checkout main
+        uses: actions/checkout@v2
+        with:
+          path: main
+
+      - name: Checkout target
+        uses: actions/checkout@v2
+        with:
+          path: gh-pages
+          ref: gh-pages
+          repository: deificx/tetris
+
+      - name: Build and publish gh-pages
+        run: |
+          cp -r main/* gh-pages/
+          cd gh-pages
+          yarn
+          yarn build
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "release"
+          git push origin gh-pages
